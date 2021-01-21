@@ -4,6 +4,7 @@ import logging
 import requests
 import json
 
+
 # Lambda ENVIRONMENT VARIABLES
 rds_host = os.environ['RDS_HOST']
 af_url = os.environ['AIRFLOW_URL']
