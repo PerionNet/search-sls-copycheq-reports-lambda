@@ -1,0 +1,55 @@
+service: filesproviders-lambda
+frameworkVersion: '2'
+
+package:
+  artifact: ${opt:artifact, ""}
+  exclude:
+    - ci_tools/**
+    - CF-Jenkinsfile
+   
+custom:
+  trigger_bucket: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):trigger_bucket}
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  vpc:
+    subnetIds:
+      "Fn::Split":
+        - ","
+        - ${env:AWS_SUBNETS,''}
+    securityGroupIds:
+      "Fn::Split":
+        - ","
+        - ${env:AWS_SG, ''}
+  memorySize: 1024
+  timeout: 29
+  iamRoleStatementsName: "${self:service}-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}-Role"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::${self:custom.trigger_bucket}/*"
+  # The environment, if env from outside, add it to Jenkins, example MONGO_CRED set from Jenkins pipeline
+  environment:
+    DB_USERNAME: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_username}
+    DB_PASSWORD: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_password}
+    DB_NAME: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_name}
+    RDS_HOST: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):rds_host}
+    AIRFLOW_URL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):airflow_url}
+    SOURCE_FILS_AWS_LAMBDA_TRIGGER_TBL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):source_file_aws_lambda_trigger_tbl}
+    SOURCE_FILE_AUDIT_TBL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):source_file_audit_tbl}
+
+     
+functions:
+  filesproviders_trigger:
+    handler: filesproviders_trigger.lambda_handler
+    events:
+      - s3:
+          bucket: ${self:custom.trigger_bucket}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: input/
+          existing: true
