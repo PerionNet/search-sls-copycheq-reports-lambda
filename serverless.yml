@@ -1,4 +1,4 @@
-service: filesproviders-lambda
+service: cheq_report-lambda
 frameworkVersion: '2'
 
 package:
@@ -44,8 +44,8 @@ provider:
 
      
 functions:
-  filesproviders_trigger:
-    handler: filesproviders_trigger.lambda_handler
+  cheq_report_trigger:
+    handler: cheq_report_trigger.lambda_handler
     events:
       - s3:
           bucket: ${self:custom.trigger_bucket}
