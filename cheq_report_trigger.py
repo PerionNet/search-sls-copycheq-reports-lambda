@@ -2,8 +2,6 @@ import os
 import logging
 import uuid
 from datetime import datetime
-from utils import insert_file_lambda_trigger
-from utils import trigger_dag
 from utils import copy_s3_file
 
 
@@ -16,11 +14,7 @@ process_name = 'cheq_report_trigger'
 sub_process_name = ''
 
 # Lambda ENVIRONMENT VARIABLES
-rds_host = os.environ['RDS_HOST']
-af_url = os.environ['AIRFLOW_URL']
-username = os.environ['DB_USERNAME']
-password = os.environ['DB_PASSWORD']
-db_name = os.environ['DB_NAME']
+destination_bucket = os.environ['DESTINATION_BUCKET']
 
 
 def lambda_handler(event, context):
@@ -47,7 +41,7 @@ def lambda_handler(event, context):
 
                 s3_source_bucket = bucket
                 s3_source_key = key
-                s3_destination_bucket = 'search-datalog-nonprod-us-east-1'
+                s3_destination_bucket = destination_bucket  # 'search-datalog-nonprod-us-east-1'
                 s3_destination_key = 'datalogs/cheq_reports/{dt_in}/{source_file_in}'.format(dt_in=dt_without_hyphen,
                                                                                              source_file_in=source_file)
                 sub_process_name = source_file
@@ -60,15 +54,13 @@ def lambda_handler(event, context):
 
                 copy_s3_file(s3_source_bucket, s3_source_key, s3_destination_bucket, s3_destination_key)
 
-                # file_path = 's3://{s3_bucket}/{s3_key}'.format(s3_bucket=bucket, s3_key=key)
-
                 utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, 'success',
                                                     datetime.now(), start_step_time, start_process_time, '')
 
-                utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, 'general_step',
-                                                    'success', datetime.now(), start_process_time, start_process_time, '')
+        utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, 'general_step',
+                                            'success', datetime.now(), start_process_time, start_process_time, '')
 
-                logger.info("************* End Job *************")
+        logger.info("************* End Job *************")
 
     except Exception as e:
         logger.error(e)
