@@ -38,11 +38,9 @@ provider:
     DB_PASSWORD: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_password}
     DB_NAME: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_name}
     RDS_HOST: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):rds_host}
-    AIRFLOW_URL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):airflow_url}
-    SOURCE_FILS_AWS_LAMBDA_TRIGGER_TBL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):source_file_aws_lambda_trigger_tbl}
-    SOURCE_FILE_AUDIT_TBL: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):source_file_audit_tbl}
+    DESTINATION_BUCKET: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):destination_bucket}
 
-     
+
 functions:
   cheq_report_trigger:
     handler: cheq_report_trigger.lambda_handler

@@ -1,0 +1,8 @@
+trigger_bucket: cheq_report
+destination_bucket: search-datalog-nonprod-us-east-1
+db_username: SearchDataLake
+db_password: sqlsearch
+db_name: Source2ParquetDB
+rds_host: se-datalake-mysql-repo-d.coao2qn5lx2j.us-east-1.rds.amazonaws.com
+
+

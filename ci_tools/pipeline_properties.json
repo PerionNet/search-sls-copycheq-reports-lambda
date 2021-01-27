@@ -1,0 +1,6 @@
+{
+  "service": {
+    "BASE_IMAGE": "perionnet/serverless-python3",
+    "EMAIL_TO": "DataEngineers@codefuel.com"
+  }
+}
