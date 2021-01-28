@@ -36,8 +36,6 @@ def utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, st
             Exception: mysql error.
     """
     try:
-        env_param = os.environ['ENV']
-        config = read_config(env_param)
         mysql_conn = pymysql.connect(host=rds_host,
                                      user=username,
                                      passwd=password,
