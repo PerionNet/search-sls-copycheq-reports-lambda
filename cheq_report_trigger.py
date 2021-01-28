@@ -2,7 +2,7 @@ import os
 import logging
 import uuid
 from datetime import datetime
-from utils import copy_s3_file
+from utils import copy_s3_file, utl_create_source2parquet_log_entry
 
 
 logger = logging.getLogger()
