@@ -48,6 +48,4 @@ functions:
       - s3:
           bucket: ${self:custom.trigger_bucket}
           event: s3:ObjectCreated:*
-          rules:
-            - prefix: input/
           existing: true

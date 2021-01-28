@@ -1,4 +1,4 @@
-trigger_bucket: cheq_report
+trigger_bucket: cheq-reports
 destination_bucket: search-datalog-us-west-2
 db_username: SearchDataLake
 db_password: sqlsearch
