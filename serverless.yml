@@ -1,4 +1,4 @@
-service: cheq_report-lambda
+service: copycheq-reports-lambda
 frameworkVersion: '2'
 
 package:
