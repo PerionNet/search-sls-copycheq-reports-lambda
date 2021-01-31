@@ -51,19 +51,14 @@ def lambda_handler(event, context):
                 logger.info('************* ' + step_name + ' *************')
                 utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, 'start',
                                                     insert_time, start_step_time, start_process_time, '')
-                logger.info('s3_source_bucket')
-                logger.info(s3_source_bucket)
-                logger.info('s3_source_key')
-                logger.info(s3_source_key)
-                print('s3_source_key')
-                print(s3_source_key)
-                logger.info('s3_destination_bucket')
-                logger.info(s3_destination_bucket)
-                logger.info('s3_destination_key')
-                logger.info(s3_destination_key)
 
                 s3_source_key_new = s3_source_key.replace("%3D", "=")
                 s3_destination_key_new = s3_destination_key.replace("%3D", "=")
+
+                logger.info('s3_source_bucket: {}'.format(s3_source_bucket))
+                logger.info('s3_source_key: {}'.format(s3_source_key_new))
+                logger.info('s3_destination_bucket: {}'.format(s3_destination_bucket))
+                logger.info('s3_destination_key: {}'.format(s3_destination_key_new))
 
                 copy_s3_file(s3_source_bucket, s3_source_key_new, s3_destination_bucket, s3_destination_key_new)
 
