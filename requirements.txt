@@ -2,5 +2,3 @@ boto3
 pymysql
 requests
 botocore
-urllib.request
-urllib.parse
