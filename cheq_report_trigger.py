@@ -1,6 +1,7 @@
 import os
 import logging
 import uuid
+import urllib.parse
 from datetime import datetime
 from utils import copy_s3_file, utl_create_source2parquet_log_entry
 
@@ -8,7 +9,6 @@ from utils import copy_s3_file, utl_create_source2parquet_log_entry
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.info("************* Start Job *************")
-
 
 guid = str(uuid.uuid4().hex)
 process_name = 'cheq_report_trigger'
@@ -56,11 +56,11 @@ def lambda_handler(event, context):
                 utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, 'start',
                                                     insert_time, start_step_time, start_process_time, '')
 
-                s3_source_key_new = s3_source_key.replace("%3D", "=")
-                s3_destination_key_new = s3_destination_key.replace("%3D", "=")
+                # s3_source_key_new = s3_source_key.replace("%3D", "=")
+                # s3_destination_key_new = s3_destination_key.replace("%3D", "=")
 
-                # s3_source_key_new = urllib.parse.unquote(s3_source_key)
-                # s3_destination_key_new = urllib.parse.unquote(s3_destination_key)
+                s3_source_key_new = urllib.parse.unquote(s3_source_key)
+                s3_destination_key_new = urllib.parse.unquote(s3_destination_key)
 
                 logger.info('s3_source_bucket: {}'.format(s3_source_bucket))
                 logger.info('s3_source_key: {}'.format(s3_source_key_new))
