@@ -65,14 +65,14 @@ def lambda_handler(event, context):
                 utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, 'success',
                                                     datetime.now(), start_step_time, start_process_time, '')
 
-        utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, 'general_step',
+        utl_create_source2parquet_log_entry(guid, process_name, '', 'general_step',
                                             'success', datetime.now(), start_process_time, start_process_time, '')
 
         logger.info("************* End Job *************")
 
     except Exception as e:
         logger.error(e)
-        utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, 'general_step', 'failure',
+        utl_create_source2parquet_log_entry(guid, process_name, '', 'general_step', 'failure',
                                             datetime.now(), start_process_time, start_process_time, str(e))
         raise
 
