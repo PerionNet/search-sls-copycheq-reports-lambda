@@ -9,6 +9,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.info("************* Start Job *************")
 
+
 guid = str(uuid.uuid4().hex)
 process_name = 'cheq_report_trigger'
 sub_process_name = ''
