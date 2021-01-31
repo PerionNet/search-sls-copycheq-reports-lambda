@@ -69,7 +69,9 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
         'Bucket': s3_source_bucket,
         'Key': s3_source_key
     }
-    s3.meta.client.copy(copy_source, s3_destination_bucket, s3_destination_path)
+    s3.meta.client.copy(copy_source, s3_destination_bucket, s3_destination_path,
+                        ExtraArgs={'ACL': 'bucket-owner-full-control'})
+
     print('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
                                                 to=s3_destination_bucket + '/' + s3_destination_path))
 
