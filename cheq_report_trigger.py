@@ -46,7 +46,7 @@ def lambda_handler(event, context):
                 s3_source_bucket = bucket
                 s3_source_key = key
                 s3_destination_bucket = destination_bucket  # 'search-datalog-nonprod-us-east-1'
-                s3_destination_key = 'datalogs/cheq_reports/{dt_in}/{dest_file_in}'.format(dt_in=dt_without_hyphen,
+                s3_destination_key = 'datalogs/cheq_report/{dt_in}/{dest_file_in}'.format(dt_in=dt_without_hyphen,
                                                                                            dest_file_in=dest_file)
                 sub_process_name = source_file
                 insert_time = datetime.now()
