@@ -1,5 +1,5 @@
 trigger_bucket: cheq-reports
-destination_bucket: search-datalog-us-east-1
+destination_bucket: search-datalog-prod-us-east-1
 db_username: SearchDataLake
 db_password: sqlsearch
 db_name: Source2ParquetDB
