@@ -3,6 +3,7 @@ import logging
 import uuid
 import urllib.parse
 from datetime import datetime
+import time
 from utils import copy_s3_file, utl_create_source2parquet_log_entry
 
 
@@ -22,6 +23,9 @@ def lambda_handler(event, context):
     """ This function fetches object content to MySQL table source_file_aws_lambda_trigger and Trigger Airflow Dag"""
 
     try:
+
+        # hot fix - wait 2 minutes until lambda starts
+        time.sleep(120)
 
         insert_time = datetime.now()
         start_process_time = insert_time

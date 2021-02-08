@@ -52,27 +52,39 @@ def utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, st
         # print curs.fetchone()
 
     except Exception as e:
-        print(e)
-        raise
+        logger.error(e)
+        raise e
     finally:
         mysql_conn.close()  # Use all the SQL you like
 
 
 def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path):
-    s3_source_bucket = source_bucket
-    s3_source_key = source_key
-    s3_destination_bucket = destination_bucket
-    s3_destination_path = destination_path
+    try:
+        s3_source_bucket = source_bucket
+        s3_source_key = source_key
+        s3_destination_bucket = destination_bucket
+        s3_destination_path = destination_path
 
-    s3 = boto3.resource('s3')
-    copy_source = {
-        'Bucket': s3_source_bucket,
-        'Key': s3_source_key
-    }
-    s3.meta.client.copy(copy_source, s3_destination_bucket, s3_destination_path,
-                        ExtraArgs={'ACL': 'bucket-owner-full-control'})
+        s3 = boto3.resource('s3')
+        copy_source = {
+            'Bucket': s3_source_bucket,
+            'Key': s3_source_key
+        }
+        s3.meta.client.copy(copy_source, s3_destination_bucket, s3_destination_path,
+                            ExtraArgs={'ACL': 'bucket-owner-full-control'})
 
-    print('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
-                                                to=s3_destination_bucket + '/' + s3_destination_path))
+        print('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
+                                                    to=s3_destination_bucket + '/' + s3_destination_path))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            logger.error("The object not found - error code 404")
+            pass
+        else:
+            logger.error(e)
+            raise e
+
+    except Exception as e:
+        logger.error(e)
+        raise e
 
 
