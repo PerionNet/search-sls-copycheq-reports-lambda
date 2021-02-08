@@ -9,6 +9,7 @@ package:
    
 custom:
   trigger_bucket: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):trigger_bucket}
+  destination_bucket: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):destination_bucket}
 
 provider:
   name: aws
@@ -32,6 +33,12 @@ provider:
       Action:
         - "s3:GetObject"
       Resource: "arn:aws:s3:::${self:custom.trigger_bucket}/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:PutObjectAcl
+      Resource: "arn:aws:s3:::${self:custom.destination_bucket}/*"   
   # The environment, if env from outside, add it to Jenkins, example MONGO_CRED set from Jenkins pipeline
   environment:
     DB_USERNAME: ${file(config/config-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}.yml):db_username}
