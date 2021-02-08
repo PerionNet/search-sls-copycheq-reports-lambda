@@ -23,15 +23,18 @@ def lambda_handler(event, context):
     """ This function fetches object content to MySQL table source_file_aws_lambda_trigger and Trigger Airflow Dag"""
 
     try:
-
-        # hot fix - wait 2 minutes until lambda starts
-        time.sleep(120)
-
         insert_time = datetime.now()
         start_process_time = insert_time
         start_step_time = insert_time
         utl_create_source2parquet_log_entry(guid, process_name, '', 'general_step', 'start', insert_time,
                                             start_step_time, start_process_time, '')
+
+        # hot fix - wait 2 minutes until lambda starts
+        time.sleep(120)
+        txt_info = "Sleep for 2 minutes"
+        logger.info(txt_info)
+        utl_create_filesproviders_log_entry(guid, process_name, '', txt_info, 'info',
+                                            datetime.now(), start_step_time, start_process_time, '')
 
         for record in event['Records']:
             bucket = record['s3']['bucket']['name']
