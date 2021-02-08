@@ -32,12 +32,14 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:GetObject"
+        - "s3:ListBucket"
       Resource: "arn:aws:s3:::${self:custom.trigger_bucket}/*"
     - Effect: "Allow"
       Action:
         - "s3:GetObject"
         - "s3:PutObject"
         - "s3:PutObjectAcl"
+        - "s3:ListBucket"
       Resource: "arn:aws:s3:::${self:custom.destination_bucket}/*"   
   # The environment, if env from outside, add it to Jenkins, example MONGO_CRED set from Jenkins pipeline
   environment:
