@@ -37,7 +37,7 @@ provider:
       Action:
         - "s3:GetObject"
         - "s3:PutObject"
-        - "s3:PutObjectAcl
+        - "s3:PutObjectAcl"
       Resource: "arn:aws:s3:::${self:custom.destination_bucket}/*"   
   # The environment, if env from outside, add it to Jenkins, example MONGO_CRED set from Jenkins pipeline
   environment:
