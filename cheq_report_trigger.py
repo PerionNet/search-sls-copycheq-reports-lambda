@@ -4,7 +4,7 @@ import uuid
 import urllib.parse
 from datetime import datetime
 import time
-from utils import copy_s3_file,copy_s3_file2,  utl_create_source2parquet_log_entry
+from utils import copy_s3_file,  utl_create_source2parquet_log_entry
 
 
 logger = logging.getLogger()
