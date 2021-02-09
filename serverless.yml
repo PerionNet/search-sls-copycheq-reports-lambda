@@ -33,6 +33,7 @@ provider:
       Action:
         - "s3:GetObject"
         - "s3:ListBucket"
+        - "s3:HeadObject"
       Resource: "arn:aws:s3:::${self:custom.trigger_bucket}/*"
     - Effect: "Allow"
       Action:
