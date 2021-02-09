@@ -29,12 +29,12 @@ def lambda_handler(event, context):
         utl_create_source2parquet_log_entry(guid, process_name, '', 'general_step', 'start', insert_time,
                                             start_step_time, start_process_time, '')
 
-        # hot fix - wait 20 seconds until lambda starts
-        time.sleep(20)
-        txt_info = "Sleep for 20 seconds"
-        logger.info(txt_info)
-        utl_create_source2parquet_log_entry(guid, process_name, '', txt_info, 'info',
-                                            datetime.now(), start_step_time, start_process_time, '')
+        # # hot fix - wait 20 seconds until lambda starts
+        # time.sleep(20)
+        # txt_info = "Sleep for 20 seconds"
+        # logger.info(txt_info)
+        # utl_create_source2parquet_log_entry(guid, process_name, '', txt_info, 'info',
+        #                                     datetime.now(), start_step_time, start_process_time, '')
 
         for record in event['Records']:
             bucket = record['s3']['bucket']['name']
@@ -54,7 +54,7 @@ def lambda_handler(event, context):
                 s3_source_key = key
                 s3_destination_bucket = destination_bucket  # 'search-datalog-nonprod-us-east-1'
                 s3_destination_key = 'datalogs/cheq_report/{dt_in}/{dest_file_in}'.format(dt_in=dt_without_hyphen,
-                                                                                           dest_file_in=dest_file)
+                                                                                          dest_file_in=dest_file)
                 sub_process_name = source_file
                 insert_time = datetime.now()
                 start_step_time = insert_time
@@ -75,6 +75,7 @@ def lambda_handler(event, context):
                 logger.info('s3_destination_key: {}'.format(s3_destination_key_new))
 
                 copy_s3_file(s3_source_bucket, s3_source_key_new, s3_destination_bucket, s3_destination_key_new)
+                copy_s3_file2(s3_source_bucket, s3_source_key_new, s3_destination_bucket, s3_destination_key_new)
 
                 utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, 'success',
                                                     datetime.now(), start_step_time, start_process_time, '')
