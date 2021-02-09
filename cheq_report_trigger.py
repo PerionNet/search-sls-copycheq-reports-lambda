@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         time.sleep(20)
         txt_info = "Sleep for 20 seconds"
         logger.info(txt_info)
-        utl_create_filesproviders_log_entry(guid, process_name, '', txt_info, 'info',
+        utl_create_source2parquet_log_entry(guid, process_name, '', txt_info, 'info',
                                             datetime.now(), start_step_time, start_process_time, '')
 
         for record in event['Records']:
