@@ -63,7 +63,9 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
         s3_source_bucket = source_bucket
         s3_source_key = source_key
         s3_destination_bucket = destination_bucket
-        s3_destination_path = destination_path
+        #s3_destination_path = destination_path
+        s3_destination_path = destination_path.replace("datalogs", "datalogs1")
+
 
         s3 = boto3.resource('s3')
         copy_source = {
@@ -73,11 +75,16 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
         s3.meta.client.copy(copy_source, s3_destination_bucket, s3_destination_path,
                             ExtraArgs={'ACL': 'bucket-owner-full-control'})
 
-        print('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
-                                                    to=s3_destination_bucket + '/' + s3_destination_path))
+        logger.info('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
+                                                          to=s3_destination_bucket + '/' + s3_destination_path))
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
             logger.error("The object not found - error code 404")
+            logger.info('copy_s3_file2 failed with code 404')
+            pass
+        elif e.response['Error']['Code'] == "403":
+            logger.error("HeadObject operation: Forbidden - error code 403")
+            logger.info('copy_s3_file2 failed with code 403')
             pass
         else:
             logger.error(e)
@@ -87,4 +94,41 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
         logger.error(e)
         raise e
 
+
+def copy_s3_file2(source_bucket, source_key, destination_bucket, destination_path):
+    try:
+        s3_source_bucket = source_bucket
+        s3_source_key = source_key
+        s3_destination_bucket = destination_bucket
+        # s3_destination_path = destination_path
+        s3_destination_path = destination_path.replace("datalogs", "datalogs2")
+
+        s3 = boto3.resource('s3')
+        copy_source = {
+            'Bucket': s3_source_bucket,
+            'Key': s3_source_key
+        }
+
+        dest_bucket = s3.Bucket(s3_destination_bucket)
+        dest_bucket.copy(copy_source, s3_destination_path,
+                         ExtraArgs={'ACL': 'bucket-owner-full-control'})
+
+        logger.info('file copy from {fro} to {to}'.format(fro=s3_source_bucket + '/' + s3_source_key,
+                                                          to=s3_destination_bucket + '/' + s3_destination_path))
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            logger.error("The object not found - error code 404")
+            logger.info('copy_s3_file2 failed with code 404')
+            pass
+        elif e.response['Error']['Code'] == "403":
+            logger.error("HeadObject operation: Forbidden - error code 403")
+            logger.info('copy_s3_file2 failed with code 403')
+            pass
+        else:
+            logger.error(e)
+            raise e
+
+    except Exception as e:
+        logger.error(e)
+        raise e
 
