@@ -92,8 +92,8 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
                     err_txt = 'Copy failed after 3 attempts'
                     logger.error(err_txt)
                     raise ValueError(err_txt)
-                time.sleep(20)
-                logger.info('Sleep for 20 seconds')
+                time.sleep(60)
+                logger.info('Sleep for 60 seconds')
                 pass
             else:
                 logger.error(e)
