@@ -26,7 +26,7 @@ provider:
         - ","
         - ${env:AWS_SG, ''}
   memorySize: 1024
-  timeout: 29
+  timeout: 180
   iamRoleStatementsName: "${self:service}-${opt:stage, 'dev'}-${opt:region, 'us-east-1'}-Role"
   iamRoleStatements:
     - Effect: "Allow"
