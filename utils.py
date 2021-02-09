@@ -80,11 +80,11 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
             logger.error("The object not found - error code 404")
-            logger.info('copy_s3_file2 failed with code 404')
+            logger.info('copy_s3_file failed with code 404')
             pass
         elif e.response['Error']['Code'] == "403":
             logger.error("HeadObject operation: Forbidden - error code 403")
-            logger.info('copy_s3_file2 failed with code 403')
+            logger.info('copy_s3_file failed with code 403')
             pass
         else:
             logger.error(e)

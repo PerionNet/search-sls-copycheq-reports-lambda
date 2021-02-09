@@ -29,12 +29,12 @@ def lambda_handler(event, context):
         utl_create_source2parquet_log_entry(guid, process_name, '', 'general_step', 'start', insert_time,
                                             start_step_time, start_process_time, '')
 
-        # # hot fix - wait 20 seconds until lambda starts
-        # time.sleep(20)
-        # txt_info = "Sleep for 20 seconds"
-        # logger.info(txt_info)
-        # utl_create_source2parquet_log_entry(guid, process_name, '', txt_info, 'info',
-        #                                     datetime.now(), start_step_time, start_process_time, '')
+        # hot fix - wait 20 seconds until lambda starts
+        time.sleep(20)
+        txt_info = "Sleep for 20 seconds"
+        logger.info(txt_info)
+        utl_create_source2parquet_log_entry(guid, process_name, '', txt_info, 'info',
+                                            datetime.now(), start_step_time, start_process_time, '')
 
         for record in event['Records']:
             bucket = record['s3']['bucket']['name']
