@@ -6,6 +6,7 @@ import json
 import boto3
 import botocore
 import time
+boto3.set_stream_logger('', logging.INFO)
 
 # Lambda ENVIRONMENT VARIABLES
 rds_host = os.environ['RDS_HOST']
