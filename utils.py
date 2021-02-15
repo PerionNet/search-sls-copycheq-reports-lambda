@@ -95,6 +95,9 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
             if e.response['Error']['Code'] == "403":
                 logger.error("HeadObject operation: Forbidden - error code 403")
                 logger.info('copy_s3_file failed with code 403')
+                logger.info('Error Message: {}'.format(e.response['Error']['Message']))
+                logger.info('Request ID: {}'.format(e.response['ResponseMetadata']['RequestId']))
+                logger.info('Http code: {}'.format(e.response['ResponseMetadata']['HTTPStatusCode']))
                 attempts += 1
                 if attempts == 3:
                     raise ValueError("Copy failed after 3 attempts")
