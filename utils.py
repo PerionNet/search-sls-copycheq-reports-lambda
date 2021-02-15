@@ -14,8 +14,17 @@ username = os.environ['DB_USERNAME']
 password = os.environ['DB_PASSWORD']
 db_name = os.environ['DB_NAME']
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+# logger = logging.getLogger()
+# logger.setLevel(logging.INFO)
+
+logging.basicConfig(filename='logfile.txt', level=logging.INFO)
+logger = logging.getLogger(__name__)
+s3 = boto3.resource('s3')
+response = s3.Bucket(bucket_name).Object(object_key).put()
+logger.info("HTTPStatusCode: %s", response['ResponseMetadata']['HTTPStatusCode'])
+logger.info("RequestId: %s", response['ResponseMetadata']['RequestId'])
+logger.info("HostId: %s", response['ResponseMetadata']['HostId'])
+logger.info("Date: %s", response['ResponseMetadata']['HTTPHeaders']['date'])
 
 
 def utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, step_status, insert_time,
