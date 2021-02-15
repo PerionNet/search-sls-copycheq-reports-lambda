@@ -14,17 +14,8 @@ username = os.environ['DB_USERNAME']
 password = os.environ['DB_PASSWORD']
 db_name = os.environ['DB_NAME']
 
-# logger = logging.getLogger()
-# logger.setLevel(logging.INFO)
-
-logging.basicConfig(filename='logfile.txt', level=logging.INFO)
-logger = logging.getLogger(__name__)
-s3 = boto3.resource('s3')
-response = s3.Bucket(bucket_name).Object(object_key).put()
-logger.info("HTTPStatusCode: %s", response['ResponseMetadata']['HTTPStatusCode'])
-logger.info("RequestId: %s", response['ResponseMetadata']['RequestId'])
-logger.info("HostId: %s", response['ResponseMetadata']['HostId'])
-logger.info("Date: %s", response['ResponseMetadata']['HTTPHeaders']['date'])
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def utl_create_source2parquet_log_entry(guid, process_name, sub_process_name, step_name, step_status, insert_time,
@@ -99,6 +90,7 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
                 logger.info('Error Message: {}'.format(e.response['Error']['Message']))
                 logger.info('Request ID: {}'.format(e.response['ResponseMetadata']['RequestId']))
                 logger.info('Http code: {}'.format(e.response['ResponseMetadata']['HTTPStatusCode']))
+
                 attempts += 1
                 if attempts == 3:
                     logger.error("HeadObject operation: Forbidden - error code 403")
@@ -115,5 +107,6 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
         except Exception as e:
             logger.error(e)
             raise e
+
 
 
