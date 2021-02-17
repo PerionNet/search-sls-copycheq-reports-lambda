@@ -6,7 +6,7 @@ import json
 import boto3
 import botocore
 import time
-boto3.set_stream_logger('', logging.INFO)
+# boto3.set_stream_logger('', logging.INFO)
 
 # Lambda ENVIRONMENT VARIABLES
 rds_host = os.environ['RDS_HOST']
@@ -89,6 +89,7 @@ def copy_s3_file(source_bucket, source_key, destination_bucket, destination_path
                 logger.info('Error Message: {}'.format(e.response['Error']['Message']))
                 logger.info('Request ID: {}'.format(e.response['ResponseMetadata']['RequestId']))
                 logger.info('Http code: {}'.format(e.response['ResponseMetadata']['HTTPStatusCode']))
+                logger.info('HostId: {}'.format(e.response['ResponseMetadata']['HostId']))
 
                 attempts += 1
                 if attempts == 3:
